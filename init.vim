@@ -166,6 +166,10 @@ lua <<EOF
 require'nvim_lsp'.pyls.setup{}
 EOF
 
+" Quickfix shortcots
+nnoremap ]q :cn<CR>
+nnoremap [q :cp<CR>
+
 " Treesitter
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
