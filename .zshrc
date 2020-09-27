@@ -21,6 +21,15 @@ alias update_maxwell='git push --set-upstream web master'
 # Specify default editor. Possible values: vim, nano, ed etc.
 export EDITOR=nvim
 
+# Alias ls to use exa
+alias l='exa'
+alias la='exa -a'
+alias ll='exa -lah'
+alias ls='exa --color=auto'
+
+# Alias cat to bat
+alias cat='bat --style=plain'
+
 # Autocompletion
 autoload -Uz compinit; compinit
 zstyle ':completion:*' menu select
