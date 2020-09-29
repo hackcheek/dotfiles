@@ -41,6 +41,7 @@ Plug 'Shougo/deoplete-lsp'
 Plug 'hkupty/iron.nvim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
+Plug 'GCBallesteros/vim-textobj-hydrogen'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -160,6 +161,11 @@ let g:lightline = { 'colorscheme': 'nightfly' }
 
 " Disable scratpad. We just need the floating window
 set completeopt-=preview
+
+" Send cell to IronRepl and move to next one.
+" Depends on the text object defined in vim-textobj-hydrogen
+" You first need to be connected to IronRepl
+nmap ]x ctrih/^# %%<CR><CR>
 
 " prep the lsp to work with python
 lua <<EOF
