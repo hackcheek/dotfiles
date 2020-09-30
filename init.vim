@@ -32,7 +32,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'qpkorr/vim-bufkill'
-Plug 'dense-analysis/ale'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'neovim/nvim-lspconfig'
@@ -42,9 +41,14 @@ Plug 'hkupty/iron.nvim'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 Plug 'GCBallesteros/vim-textobj-hydrogen'
+Plug 'GCBallesteros/jupytext.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
+
+" Jupytext
+let g:jupytext_fmt = 'py'
+let g:jupytext_style = 'hydrogen'
 
 " Always keep 5 lines from bottom/top
 set scrolloff=5
@@ -135,18 +139,6 @@ let g:startify_relative_path = 1
 " Disable bloody autocommenting
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" Ale
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_linters = {'python': ['flake8']}
-let g:ale_fixers = {
-    \'*': ['remove_trailing_lines', 'trim_whitespace'],
-    \'python': ['black'],
-    \ }
-
 " register language server
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
@@ -172,6 +164,7 @@ lua <<EOF
 require'nvim_lsp'.pyls.setup{}
 EOF
 
+"settings = {configurationSources = {"pyflakes"}};
 " Quickfix shortcots
 nnoremap ]q :cn<CR>
 nnoremap [q :cp<CR>
