@@ -20,9 +20,11 @@ filetype plugin on
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-" Declare the list of plugins.
-Plug 'easymotion/vim-easymotion'
+" Aesthetics
 Plug 'itchyny/lightline.vim'
+Plug 'bluz71/vim-nightfly-guicolors'
+" Jump fast!
+Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
 Plug 'mhinz/vim-startify'
 Plug 'python/black'
@@ -31,17 +33,21 @@ Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" Better buffer deletion
 Plug 'qpkorr/vim-bufkill'
-Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'neovim/nvim-lspconfig'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
-Plug 'hkupty/iron.nvim'
+" Line text object al, il
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
+" All this are to get a Jupyter like experience
+Plug 'hkupty/iron.nvim'
 Plug 'GCBallesteros/vim-textobj-hydrogen'
 Plug 'GCBallesteros/jupytext.vim'
+" Saner search and highlightiing behaviour
+Plug 'wincent/loupe'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -67,11 +73,9 @@ nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 set incsearch
 set ignorecase
 set smartcase
-set hlsearch
 
-" Blink words when going for next
 " This unsets the "last search pattern" register by hitting return
-nnoremap <CR> :nohlsearch<CR><CR>
+nmap <CR> <Plug>(LoupeClearHighlight)
 
 " For airline
 set laststatus=2
@@ -111,22 +115,6 @@ fun! TrimWhiteSpace()
     call winrestview(l:save)
 endfun
 command! TrimWhiteSpace call TrimWhiteSpace()
-
-" Flash words when we are jumping on the search
-nnoremap <silent> n n:call HLNext(0.2)<CR>
-nnoremap <silent> N N:call HLNext(0.2)<CR>
-highlight WhiteOnRed ctermbg=blue ctermfg=white
-
-function! HLNext (blinktime)
-    let [bufnum, lnum, col, off] = getpos('.')
-    let matchlen = strlen(matchstr(strpart(getline('.'), col-1),@/))
-    let target_pat = '\c\%#\%('.@/.'\)'
-    let ring = matchadd('WhiteOnRed', target_pat, 101)
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
-    call matchdelete(ring)
-    redraw
-endfunction
 
 " Startify options
 let g:startify_bookmarks = ['~/.config/nvim/init.vim',]
