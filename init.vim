@@ -37,13 +37,14 @@ Plug 'junegunn/fzf.vim'
 Plug 'qpkorr/vim-bufkill'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/diagnostic-nvim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 " Line text object al, il
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
 " All this are to get a Jupyter like experience
-Plug 'hkupty/iron.nvim'
+Plug 'GCBallesteros/iron.nvim'
 Plug 'GCBallesteros/vim-textobj-hydrogen'
 Plug 'GCBallesteros/jupytext.vim'
 " Saner search and highlightiing behaviour
@@ -149,13 +150,20 @@ nmap ]x ctrih/^# %%<CR><CR>
 
 " prep the lsp to work with python
 lua <<EOF
-require'nvim_lsp'.pyls.setup{}
+require'nvim_lsp'.pyls.setup{on_attach=require'diagnostic'.on_attach}
 EOF
 
-"settings = {configurationSources = {"pyflakes"}};
-" Quickfix shortcots
+" Diagnostics customizations for LSP
+call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
+call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
+
+" Quickfix shortcuts
 nnoremap ]q :cn<CR>
 nnoremap [q :cp<CR>
+
+" Location list shortcuts
+nnoremap ]l :lnext<CR>
+nnoremap [l :lprevious<CR>
 
 " Treesitter
 lua <<EOF
@@ -163,7 +171,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "python",     -- one of "all", "language", or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = {"python",  "c", "rust" },  -- list of language that will be disabled
+    disable = { "c", "rust" },  -- list of language that will be disabled
   },
 }
 EOF
