@@ -157,10 +157,6 @@ set completeopt-=preview
 " You first need to be connected to IronRepl
 nmap ]x ctrih/^# %%<CR><CR>
 
-" prep the lsp to work with python
-lua <<EOF
-require'nvim_lsp'.pyls.setup{on_attach=require'diagnostic'.on_attach}
-EOF
 
 " Diagnostics customizations for LSP
 call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
@@ -174,17 +170,7 @@ nnoremap [q :cp<CR>
 nnoremap ]l :NextDiagnosticCycle<CR>
 nnoremap [l :PrevDiagnosticCycle<CR>
 
-" Treesitter
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "python",     -- one of "all", "language", or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
-  },
-}
-EOF
-
+" Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
 
 " How to disable wrap per file
