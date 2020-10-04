@@ -23,6 +23,7 @@ call plug#begin('~/.vim/plugged')
 " Aesthetics
 Plug 'itchyny/lightline.vim'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'dracula/vim', { 'as': 'dracula' }
 " Jump fast!
 Plug 'easymotion/vim-easymotion'
 Plug 'scrooloose/nerdcommenter'
@@ -31,6 +32,7 @@ Plug 'python/black'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Better buffer deletion
@@ -49,13 +51,15 @@ Plug 'GCBallesteros/vim-textobj-hydrogen'
 Plug 'GCBallesteros/jupytext.vim'
 " Saner search and highlightiing behaviour
 Plug 'wincent/loupe'
+" Have NVIM everywhere in your browser (Disabled until better experience)
+" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " Jupytext
-let g:jupytext_fmt = 'py'
-let g:jupytext_style = 'hydrogen'
+let g:jupytext_fmt = 'py:hydrogen'
+"let g:jupytext_filetype_map = {"py:asdf": 'r'}
 
 " Always keep 5 lines from bottom/top
 set scrolloff=5
@@ -106,8 +110,13 @@ syntax on
 " Full range of color
 set termguicolors
 
-"colorscheme dracula
-colorscheme nightfly
+if $TERM == "screen-256color"
+    colorscheme nightfly
+else
+    " Fallback for terminals supporting
+    " less colors.
+    colorscheme dracula
+endif
 
 "Trimwhite space easily
 fun! TrimWhiteSpace()
@@ -162,8 +171,8 @@ nnoremap ]q :cn<CR>
 nnoremap [q :cp<CR>
 
 " Location list shortcuts
-nnoremap ]l :lnext<CR>
-nnoremap [l :lprevious<CR>
+nnoremap ]l :NextDiagnosticCycle<CR>
+nnoremap [l :PrevDiagnosticCycle<CR>
 
 " Treesitter
 lua <<EOF
