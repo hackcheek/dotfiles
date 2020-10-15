@@ -1,5 +1,17 @@
 -- Start the LSP
-require'nvim_lsp'.pyls.setup{on_attach=require'diagnostic'.on_attach}
+require'nvim_lsp'.pyls.setup{
+    on_attach=require'diagnostic'.on_attach,
+    filetypes={'python', 'ipynb'},
+    settings={
+        pyls={
+            plugins={
+                pylint={
+                    enabled=true
+                }
+            }
+        }
+    }
+}
 
 -- Treesitter config
 require'nvim-treesitter.configs'.setup {
