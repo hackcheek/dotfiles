@@ -155,7 +155,8 @@ set completeopt-=preview
 " Send cell to IronRepl and move to next one.
 " Depends on the text object defined in vim-textobj-hydrogen
 " You first need to be connected to IronRepl
-nmap ]x ctrih/^# %%<CR><CR>
+"nmap ]x ctrih/^# \%\%<CR><CR>
+nmap ]x ctrih]h<CR><CR>
 
 
 " Diagnostics customizations for LSP
@@ -167,8 +168,8 @@ nnoremap ]q :cn<CR>
 nnoremap [q :cp<CR>
 
 " Location list shortcuts
-nnoremap ]l :NextDiagnosticCycle<CR>
-nnoremap [l :PrevDiagnosticCycle<CR>
+nnoremap ]d :NextDiagnosticCycle<CR>
+nnoremap [d :PrevDiagnosticCycle<CR>
 
 " Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
