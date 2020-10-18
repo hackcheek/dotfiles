@@ -10,6 +10,7 @@
 :augroup END
 
 set ruler " Show cursor line anc column in status line
+set colorcolumn=87
 syntax enable
 set expandtab
 set shiftwidth=4
@@ -160,8 +161,8 @@ nmap ]x ctrih]h<CR><CR>
 
 
 " Diagnostics customizations for LSP
-call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
-call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
+"call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
+"call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
 
 " Quickfix shortcuts
 nnoremap ]q :cn<CR>
@@ -173,8 +174,11 @@ nnoremap [d :PrevDiagnosticCycle<CR>
 
 " Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
+
+" Code folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
+set foldcolumn=1
 
 " How to disable wrap per file
 " Edit  $VIMRUNTIME/ftplugin/filetypename.vim
