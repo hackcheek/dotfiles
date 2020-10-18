@@ -150,7 +150,7 @@ endif
 let g:lightline = { 'colorscheme': 'nightfly' }
 
 " Disable scratpad. We just need the floating window
-set completeopt-=preview
+"set completeopt+=preview
 
 " Send cell to IronRepl and move to next one.
 " Depends on the text object defined in vim-textobj-hydrogen
@@ -173,6 +173,8 @@ nnoremap [d :PrevDiagnosticCycle<CR>
 
 " Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " How to disable wrap per file
 " Edit  $VIMRUNTIME/ftplugin/filetypename.vim
