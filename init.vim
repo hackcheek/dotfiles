@@ -10,6 +10,7 @@
 :augroup END
 
 set ruler " Show cursor line anc column in status line
+set colorcolumn=87
 syntax enable
 set expandtab
 set shiftwidth=4
@@ -169,7 +170,7 @@ function! LightlineFilename()
 endfunction
 
 " Disable scratpad. We just need the floating window
-set completeopt-=preview
+"set completeopt+=preview
 
 " Send cell to IronRepl and move to next one.
 " Depends on the text object defined in vim-textobj-hydrogen
@@ -192,6 +193,11 @@ nnoremap [d :PrevDiagnosticCycle<CR>
 
 " Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
+
+" Code folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set foldcolumn=1
 
 " How to disable wrap per file
 " Edit  $VIMRUNTIME/ftplugin/filetypename.vim
