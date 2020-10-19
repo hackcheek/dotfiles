@@ -147,7 +147,26 @@ if executable('pyls')
 endif
 
 " lightline
-let g:lightline = { 'colorscheme': 'nightfly' }
+let g:lightline = {
+    \ 'colorscheme': 'nightfly',
+    \ 'active' : {
+    \     'left': [ [ 'mode', 'paste' ],
+    \               ['readonly', 'filename', 'modified']
+    \      ]
+    \ },
+    \ 'component_function': {
+    \    'filename': 'LightlineFilename',
+    \ }
+    \ }
+
+function! LightlineFilename()
+    let root = fnamemodify(get(b:, 'git_dir'), ':h')
+    let path = expand('%:p')
+    if path[:len(root)-1] ==# root
+        return path[len(root)+1:]
+    endif
+    return expand('%')
+endfunction
 
 " Disable scratpad. We just need the floating window
 set completeopt-=preview
@@ -160,8 +179,8 @@ nmap ]x ctrih]h<CR><CR>
 
 
 " Diagnostics customizations for LSP
-call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
-call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
+"call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
+"call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
 
 " Quickfix shortcuts
 nnoremap ]q :cn<CR>
