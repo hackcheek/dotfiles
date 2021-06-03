@@ -62,6 +62,7 @@ Plug 'GCBallesteros/vim-textobj-hydrogen'
 Plug 'GCBallesteros/jupytext.vim'
 " Saner search and highlightiing behaviour
 Plug 'wincent/loupe'
+Plug 'gfanto/fzf-lsp.nvim'
 
 call plug#end()
 
@@ -78,7 +79,9 @@ let g:python_host_prog='~/.pyenv/versions/neovim/bin/python'
 " LSP Shortcuts
 nnoremap <silent><c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent>K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    :DocumentSymbols<CR>
+nnoremap <silent> gW    :WorkspaceSymbols<CR>
 
 " Search options
 set incsearch
