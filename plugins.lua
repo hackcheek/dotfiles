@@ -1,13 +1,8 @@
--- Start the LSP
-require'nvim_lsp'.pyls.setup{
-    on_attach=require'diagnostic'.on_attach,
-    filetypes={'python', 'ipynb'},
-    settings={
-        pyls={
-            plugins={
-                pylint={
-                    enabled=true
-                }
+require'lspconfig'.pyright.setup{
+    settings = {
+        python = {
+            analysis = {
+                typeCheckingMode = "off"
             }
         }
     }
@@ -29,4 +24,29 @@ iron.core.set_config {
   preferred = {
     python = "ipython"
   }
+}
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+  };
 }

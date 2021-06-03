@@ -17,9 +17,10 @@ set shiftwidth=4
 set nowrap
 set linebreak
 filetype plugin on
+set cursorline
 
 " Plugins will be downloaded under the specified directory.
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 
 " Aesthetics
 Plug 'itchyny/lightline.vim'
@@ -27,22 +28,31 @@ Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'dracula/vim', { 'as': 'dracula' }
 " Jump fast!
 Plug 'easymotion/vim-easymotion'
+" Easy line commenting
 Plug 'scrooloose/nerdcommenter'
+" Session management and pretty splash screen
 Plug 'mhinz/vim-startify'
+" Command to run black over python files
 Plug 'python/black'
+" Autoclose pairs
 Plug 'jiangmiao/auto-pairs'
+" Surround text objects with pairs
 Plug 'tpope/vim-surround'
+" Show changed lines on gutter
 Plug 'airblade/vim-gitgutter'
+" Easy git from within neovim
 Plug 'tpope/vim-fugitive'
+" Fuzzy file/buffer searching
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Better buffer deletion
 Plug 'qpkorr/vim-bufkill'
+" Better code maniuplaution
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'neovim/nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/diagnostic-nvim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/deoplete-lsp'
+" Autocompletion
+Plug 'hrsh7th/nvim-compe'
 " Line text object al, il
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-line'
@@ -52,15 +62,11 @@ Plug 'GCBallesteros/vim-textobj-hydrogen'
 Plug 'GCBallesteros/jupytext.vim'
 " Saner search and highlightiing behaviour
 Plug 'wincent/loupe'
-" Have NVIM everywhere in your browser (Disabled until better experience)
-" Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
-" List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " Jupytext
 let g:jupytext_fmt = 'py:hydrogen'
-"let g:jupytext_filetype_map = {"py:asdf": 'r'}
 
 " Always keep 5 lines from bottom/top
 set scrolloff=5
@@ -68,7 +74,6 @@ set scrolloff=5
 " and point python3_host_prog to your python3
 let g:python3_host_prog='~/.pyenv/versions/neovim3/bin/python'
 let g:python_host_prog='~/.pyenv/versions/neovim/bin/python'
-let g:deoplete#enable_at_startup = 1
 
 " LSP Shortcuts
 nnoremap <silent><c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -92,7 +97,7 @@ let maplocalleader = ";"
 
 " Shortcuts for buffers and files of fzf
 nmap ; :Buffers<CR>
-nmap <Leader>t :Files<CR>
+nmap <Leader>t :GFiles<CR>
 
 " EasyMotion configuration
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
@@ -128,7 +133,7 @@ endfun
 command! TrimWhiteSpace call TrimWhiteSpace()
 
 " Startify options
-let g:startify_bookmarks = ['~/.config/nvim/init.vim',]
+let g:startify_bookmarks = ['~/.config/nvim/init.vim', '~/.config/nvim/plugins.lua', '~/.zshrc']
 let g:startify_change_to_dir = 1
 let g:startify_relative_path = 1
 
@@ -137,15 +142,6 @@ let g:startify_relative_path = 1
 
 " Disable bloody autocommenting
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" register language server
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
 
 " lightline
 let g:lightline = {
@@ -171,25 +167,21 @@ endfunction
 
 " Disable scratpad. We just need the floating window
 "set completeopt+=preview
+set completeopt=menuone,noselect
+
 
 " Send cell to IronRepl and move to next one.
 " Depends on the text object defined in vim-textobj-hydrogen
 " You first need to be connected to IronRepl
-"nmap ]x ctrih/^# \%\%<CR><CR>
 nmap ]x ctrih]h<CR><CR>
-
-
-" Diagnostics customizations for LSP
-"call sign_define("LspDiagnosticsErrorSign", {"text" : "❌", "texthl" : "LspDiagnosticsError"})
-"call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠️", "texthl" : "LspDiagnosticsWarning"})
 
 " Quickfix shortcuts
 nnoremap ]q :cn<CR>
 nnoremap [q :cp<CR>
 
 " Location list shortcuts
-nnoremap ]d :NextDiagnosticCycle<CR>
-nnoremap [d :PrevDiagnosticCycle<CR>
+nnoremap ]d <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap [d <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 
 " Additional configurations
 luafile $HOME/.config/nvim/plugins.lua
@@ -199,6 +191,16 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldcolumn=1
 
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
+
 " How to disable wrap per file
 " Edit  $VIMRUNTIME/ftplugin/filetypename.vim
 " In that file write towards the end:setlocal wrap
+
+"https://www.asciiart.eu/space/telescopes
