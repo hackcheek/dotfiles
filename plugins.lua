@@ -1,3 +1,18 @@
+require'lualine'.setup{
+    options = { theme = 'tokyonight' },
+    sections = {
+        lualine_c = {
+            {'filename', path=1},
+            {
+                'diagnostics',
+                sources = {'nvim_lsp'}
+            }
+        },
+        lualine_x = {'encoding', 'fileformat', 'filetype', 'branch','diff'}
+    }
+}
+
+-- Python LSP Configuration
 require'lspconfig'.pyright.setup{
     settings = {
         python = {
@@ -8,12 +23,29 @@ require'lspconfig'.pyright.setup{
     }
 }
 
+
+require'lspconfig'.rust_analyzer.setup({
+    settings = {
+        ["rust-analyzer"] = {
+            cargo = {
+                loadOutDirsFromCheck = true
+            },
+            procMacro = {
+                enable = true
+            },
+        }
+    },
+    --capabilities = capabilities,
+})
+
+require "lsp_signature".setup()
+
 -- Treesitter config
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "python",     -- one of "all", "language", or a list of languages
+  ensure_installed = {"python", "rust"},     -- one of "all", "language", or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
+    disable = { "c", },  -- list of language that will be disabled
   },
 }
 

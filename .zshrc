@@ -22,7 +22,7 @@ alias update_maxwell='git push --set-upstream web master'
 export EDITOR=nvim
 
 # Alias ls to use exa
-alias l='exa'
+alias l='exa --color=auto'
 alias la='exa -a'
 alias ll='exa -lah'
 alias ls='exa --color=auto'
@@ -43,3 +43,5 @@ eval "$(starship init zsh)"
 
 # Prep fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
